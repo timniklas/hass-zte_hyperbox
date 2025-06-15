@@ -110,6 +110,11 @@ class API:
             "id": "-1",
             "encode_type": "GSM7_default"
         })
+    
+    async def reboot(self):
+        await self.sendRequest("zwrt_mc.device.manager", "device_reboot", {
+            "moduleName":"web"
+        })
 
 class APIAuthError(Exception):
     """Exception class for auth error."""
