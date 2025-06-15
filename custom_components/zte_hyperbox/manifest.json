@@ -3,6 +3,7 @@
   "name": "ZTE Hyperbox",
   "codeowners": ["@timniklas"],
   "config_flow": true,
+  "dependencies": ["pygsm7"],
   "documentation": "https://github.com/timniklas/hass-zte_hyperboxe",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/timniklas/hass-zte_hyperbox/issues",
