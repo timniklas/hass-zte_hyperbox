@@ -9,6 +9,7 @@ from homeassistant.const import (
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.helpers.device_registry import DeviceInfo
 
 from .api import API, APIAuthError
 from .const import DOMAIN
@@ -20,9 +21,9 @@ _LOGGER = logging.getLogger(__name__)
 class HyperboxAPIData:
     """Class to hold api data."""
 
-    networkStatistics: dict[str, any]
-    networkInfo: dict[str, any]
-    smsMessages: list[any]
+    network_statistics: dict[str, any]
+    network_info: dict[str, any]
+    sms_messages: list[any]
 
 
 class HyperboxCoordinator(DataUpdateCoordinator):
@@ -34,8 +35,14 @@ class HyperboxCoordinator(DataUpdateCoordinator):
         """Initialize coordinator."""
 
         # Set variables from values entered in config flow setup
-        self._hostname = config_entry.data[CONF_HOST]
+        self.hostname = config_entry.data[CONF_HOST]
         self._password = config_entry.data[CONF_PASSWORD]
+
+        self.device_info = DeviceInfo(
+            name="ZTE Hyperbox",
+            manufacturer="ZTE",
+            identifiers={(DOMAIN, self.hostname)}
+        )
 
         # Initialise DataUpdateCoordinator
         super().__init__(
@@ -49,7 +56,7 @@ class HyperboxCoordinator(DataUpdateCoordinator):
         )
 
         # Initialise your api here
-        self.api = API(hass, hostname=self._hostname)
+        self.api = API(hass, hostname=self.hostname)
 
     async def async_update_data(self):
         """Fetch data from API endpoint.
@@ -63,11 +70,19 @@ class HyperboxCoordinator(DataUpdateCoordinator):
             networkInfo = await self.api.getNetworkInfo()
             smsMessages = await self.api.getSMSMessages()
             return HyperboxAPIData(
-                networkStatistics=networkStatistics,
-                networkInfo=networkInfo,
-                smsMessages=smsMessages
+                network_statistics=networkStatistics,
+                network_info=networkInfo,
+                sms_messages=smsMessages
             )
         except Exception as err:
             _LOGGER.error(err)
             # This will show entities as unavailable by raising UpdateFailed exception
             raise UpdateFailed(f"Error communicating with API: {err}") from err
+
+    async def reboot(self):
+        await self.api.login(password=self._password)
+        await self.api.reboot()
+
+    async def sendMessage(self, address: str, message: str):
+        await self.api.login(password=self._password)
+        await self.api.sendSMSMessage(address, message)
