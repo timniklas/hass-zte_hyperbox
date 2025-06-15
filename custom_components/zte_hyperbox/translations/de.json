@@ -1,0 +1,56 @@
+{
+    "title": "ZTE Hyperbox",
+    "config": {
+        "step": {
+            "user": {
+                "title": "ZTE Hyperbox Einrichtung",
+                "description": "Diese Anmeldeinformationen werden verwendet, um die Daten vom Gerät abzurufen.",
+                "data": {
+                    "host": "IP-Adresse",
+                    "password": "Kennwort"
+                }
+            }
+        },
+        "abort": {
+            "connenction": "Fehler bei dem Verbindungsaufbau.",
+            "authentication": "Fehler bei der Authentifizierung.",
+            "unknown": "Unbekannter Fehler."
+        }
+    },
+    "entity": {
+        "button": {
+            "reboot": {
+                "name": "Gerät neustarten"
+            }
+        },
+        "sensor": {
+            "messages": {
+                "name": "SMS Nachrichten"
+            },
+            "network_statistics_real_rx_speed": {
+                "name": "Aktueller Download"
+            },
+            "network_statistics_real_tx_speed": {
+                "name": "Aktueller Upload"
+            },
+            "network_statistics_total_rx_bytes": {
+                "name": "Gesamt Download"
+            },
+            "network_statistics_total_tx_bytes": {
+                "name": "Gesamt Upload"
+            },
+            "network_info_signalbar": {
+                "name": "Signalstärke Balken"
+            },
+            "network_info_nr5g_rsrp": {
+                "name": "Signalstärke 5G"
+            },
+            "network_info_lte_rsrp": {
+                "name": "Signalstärke LTE"
+            },
+            "network_info_network_provider_fullname": {
+                "name": "Provider"
+            }
+        }
+    }
+}
