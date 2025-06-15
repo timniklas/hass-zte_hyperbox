@@ -58,18 +58,16 @@ class HyperboxCoordinator(DataUpdateCoordinator):
         so entities can quickly look up their data.
         """
         try:
-            await zte.login(password=self._password)
-            networkStatistics = await zte.getWANStatistics()
-            networkInfo = await zte.getNetworkInfo()
-            smsMessages = await zte.getSMSMessages()
+            await self.api.login(password=self._password)
+            networkStatistics = await self.api.getWANStatistics()
+            networkInfo = await self.api.getNetworkInfo()
+            smsMessages = await self.api.getSMSMessages()
             return HyperboxAPIData(
-              networkStatistics=networkStatistics),
-              networkInfo=networkInfo,
-              smsMessages=smsMessages
+                networkStatistics=networkStatistics,
+                networkInfo=networkInfo,
+                smsMessages=smsMessages
             )
-        except APIAuthError as err:
-            _LOGGER.error(err)
-            raise UpdateFailed(err) from err
         except Exception as err:
+            _LOGGER.error(err)
             # This will show entities as unavailable by raising UpdateFailed exception
             raise UpdateFailed(f"Error communicating with API: {err}") from err
