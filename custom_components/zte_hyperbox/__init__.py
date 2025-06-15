@@ -4,19 +4,21 @@ from collections.abc import Callable
 from dataclasses import dataclass
 import logging
 
+import voluptuous as vol
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.device_registry import DeviceEntry
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+from homeassistant.helpers import entity_platform
 
 from .const import DOMAIN
 from .coordinator import HyperboxCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS: list[Platform] = []
+PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.BUTTON]
 
 
 @dataclass
@@ -56,7 +58,22 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
 
     # Setup platforms (based on the list of entity types in PLATFORMS defined above)
     # This calls the async_setup method in each of your entity type files.
-    await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORMS);
+    await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORMS)
+
+    # Setup services
+    async def service_send_message(call: ServiceCall):
+        """Search in the date range and return the matching items."""
+        await coordinator.sendMessage(call.data["address"], call.data["content"])
+
+    hass.services.async_register(
+        DOMAIN,
+        "send_sms",
+        service_send_message,
+        schema=vol.Schema({
+            vol.Required("address"): str,
+            vol.Required("content"): str,
+        }),
+    )
 
     # Return true to denote a successful setup.
     return True
