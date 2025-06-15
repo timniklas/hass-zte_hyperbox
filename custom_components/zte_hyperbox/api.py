@@ -14,9 +14,9 @@ from pygsm7 import encodeMessage, decodeMessage
 _LOGGER = logging.getLogger(__name__)
 
 class API:
-    def __init__(self, hass: HomeAssistant, url: str) -> None:
+    def __init__(self, hass: HomeAssistant, hostname: str) -> None:
         """Initialise."""
-        self._url = url
+        self._url = "http://" + hostname + "/"
         self._session = async_get_clientsession(hass)
         self._req_id = 0
         self._ubus_rpc_session = "00000000000000000000000000000000"
