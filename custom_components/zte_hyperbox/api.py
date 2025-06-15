@@ -36,12 +36,12 @@ class API:
                 ]
             }
         ]
-        response = await self.session.post(self._url + "ubus/", data=json.dumps(payload), headers={
+        response = await self._session.post(self._url + "ubus/", data=json.dumps(payload), headers={
             'content-type': 'application/json',
-            "Referer": self.url
+            "Referer": self._url
         })
+        self._req_id += 1
         response_json = (await response.json())[0]
-        self.req_id += 1
         if "error" in response_json:
             raise APIAuthError(response_json['error']['message'])
         result = response_json['result']
@@ -66,6 +66,7 @@ class API:
         if response['result'] != 0:
             raise APIAuthError(response['msg'])
         self._ubus_rpc_session = response['ubus_rpc_session']
+        self.connected = True
 
     async def getWANStatistics(self):
         return await self.sendRequest("zwrt_data", "get_wwandst", {
