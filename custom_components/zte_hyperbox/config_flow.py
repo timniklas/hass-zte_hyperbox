@@ -9,7 +9,11 @@ from homeassistant.const import (
 )
 
 from .const import DOMAIN
-from .api import API
+from .api import (
+    API,
+    APIAuthError,
+    APIConnectionError
+)
 
 class HyperboxConfigFlow(ConfigFlow, domain=DOMAIN):
     VERSION = 1
@@ -22,7 +26,7 @@ class HyperboxConfigFlow(ConfigFlow, domain=DOMAIN):
             try:
                 api = API(self.hass, hostname=hostname)
                 await api.login(password=password)
-                await self.async_set_unique_id(deviceid, raise_on_progress=False)
+                await self.async_set_unique_id(hostname, raise_on_progress=False)
                 self._abort_if_unique_id_configured()
                 return self.async_create_entry(title=f"ZTE Hyperbox {hostname}", data={
                     CONF_HOST: hostname,
