@@ -43,7 +43,7 @@ class API:
         response_json = (await response.json())[0]
         self.req_id += 1
         if "error" in response_json:
-            raise APIConnectionError(response_json['error']['message'])
+            raise APIAuthError(response_json['error']['message'])
         result = response_json['result']
         if result[0] == 0:
             return response_json['result'][1]
