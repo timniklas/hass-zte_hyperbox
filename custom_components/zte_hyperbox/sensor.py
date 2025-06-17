@@ -79,12 +79,12 @@ async def async_setup_entry(
         HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_time", conversion_rate=3600, unit=UnitOfTime.HOURS, precision=2), #Aktuelle Betriebszeit
         HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_tx_bytes", conversion_rate=1073741824, unit=UnitOfInformation.GIGABYTES, precision=2), #Gesendete Bytes seit Neustart
         HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_rx_bytes", conversion_rate=1073741824, unit=UnitOfInformation.GIGABYTES, precision=2), #Empfangene Bytes seit Neustart
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_tx_packets"), #Gesendete Pakete (aktuell)
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_rx_packets"), #Empfangene Pakete (aktuell)
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_tx_drop_packets"), #Verlorene (nicht gesendete) Pakete
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_rx_drop_packets"), #Empfangsverluste (Pakete verworfen)
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_tx_error_packets"), #Sende-Fehlerpakete
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_rx_error_packets"), #Empfangs-Fehlerpakete
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_tx_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Gesendete Pakete (aktuell)
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_rx_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Empfangene Pakete (aktuell)
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_tx_drop_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Verlorene (nicht gesendete) Pakete
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_rx_drop_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Empfangsverluste (Pakete verworfen)
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_tx_error_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Sende-Fehlerpakete
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_rx_error_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Empfangs-Fehlerpakete
         HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_tx_speed", conversion_rate=1000000/8, unit=UnitOfInformation.MEGABITS, state_class=SensorStateClass.MEASUREMENT, precision=2), #Aktuelle Uploadrate
         HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_rx_speed", conversion_rate=1000000/8, unit=UnitOfInformation.MEGABITS, state_class=SensorStateClass.MEASUREMENT, precision=2), #Aktuelle Downloadrate
         HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_max_tx_speed", conversion_rate=1000000/8, unit=UnitOfInformation.MEGABITS, precision=2), #Maximale Uploadrate seit Neustart
@@ -92,21 +92,21 @@ async def async_setup_entry(
         #📅 Monatsdaten
         HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_tx_bytes", conversion_rate=1073741824, unit=UnitOfInformation.GIGABYTES, precision=2), #Upload gesamt im Monat
         HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_rx_bytes", conversion_rate=1073741824, unit=UnitOfInformation.GIGABYTES, precision=2), #Download gesamt im Monat
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_tx_packets"), #Upload-Pakete im Monat
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_rx_packets"), #Download-Pakete im Monat
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_tx_drop_packets"), #Upload-Verluste im Monat
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_rx_drop_packets"), #Download-Verluste im Monat
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_tx_error_packets"), #Upload-Fehler im Monat
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_rx_error_packets"), #Download-Fehler im Monat
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_tx_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Upload-Pakete im Monat
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_rx_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Download-Pakete im Monat
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_tx_drop_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Upload-Verluste im Monat
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_rx_drop_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Download-Verluste im Monat
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_tx_error_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Upload-Fehler im Monat
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_rx_error_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Download-Fehler im Monat
         #🧮 Gesamtdaten (Gerätelebensdauer)
         HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_tx_bytes", conversion_rate=1073741824, unit=UnitOfInformation.GIGABYTES, precision=2), #Upload gesamt
         HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_rx_bytes", conversion_rate=1073741824, unit=UnitOfInformation.GIGABYTES, precision=2), #Download gesamt
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_tx_packets"), #Upload-Pakete gesamt
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_rx_packets"), #Download-Pakete gesamt
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_tx_drop_packets"), #Upload-Verluste gesamt
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_rx_drop_packets"), #Download-Verluste gesamt
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_tx_error_packets"), #Upload-Fehler gesamt
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_rx_error_packets"), #Download-Fehler gesamt
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_tx_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Upload-Pakete gesamt
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_rx_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Download-Pakete gesamt
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_tx_drop_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Upload-Verluste gesamt
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_rx_drop_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Download-Verluste gesamt
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_tx_error_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Upload-Fehler gesamt
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_rx_error_packets", state_class=SensorStateClass.TOTAL_INCREASING), #Download-Fehler gesamt
     ]
 
     # Create the sensors.
