@@ -8,7 +8,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from homeassistant.const import EntityCategory, UnitOfInformation, SIGNAL_STRENGTH_DECIBELS
+from homeassistant.const import EntityCategory, UnitOfInformation, SIGNAL_STRENGTH_DECIBELS, SIGNAL_STRENGTH_DECIBELS_MILLIWATT, UnitOfTime
 from datetime import datetime
 
 from .const import DOMAIN
@@ -31,14 +31,82 @@ async def async_setup_entry(
     # This maybe different in your specific case, depending on how your data is structured
     sensors = [
         MessageSensor(coordinator),
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_rx_speed", conversion_rate=1000, unit=UnitOfInformation.MEGABITS, state_class=SensorStateClass.MEASUREMENT),
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_tx_speed", conversion_rate=1000, unit=UnitOfInformation.MEGABITS, state_class=SensorStateClass.MEASUREMENT),
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_rx_bytes", conversion_rate=1000000000, unit=UnitOfInformation.GIGABYTES, state_class=SensorStateClass.TOTAL_INCREASING),
-        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_tx_bytes", conversion_rate=1000000000, unit=UnitOfInformation.GIGABYTES, state_class=SensorStateClass.TOTAL_INCREASING),
-        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="signalbar", category=EntityCategory.DIAGNOSTIC),
-        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="nr5g_rsrp", unit=SIGNAL_STRENGTH_DECIBELS, state_class=SensorStateClass.MEASUREMENT, category=EntityCategory.DIAGNOSTIC, visible=False),
-        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="lte_rsrp", unit=SIGNAL_STRENGTH_DECIBELS, state_class=SensorStateClass.MEASUREMENT, category=EntityCategory.DIAGNOSTIC, visible=False),
-        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="network_provider_fullname", category=EntityCategory.DIAGNOSTIC),
+        #📶 Netzwerkauswahl & -typ
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="network_type"), #Aktueller Verbindungstyp
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="domain_stat"), #Netzdomäne
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="net_select"), #Netzpräferenz
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="net_select_mode"), #Modus der Netzauswahl
+        #📡 Signalstärke & Qualität
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="signalbar", state_class=SensorStateClass.MEASUREMENT), #Signalbalken-Anzeige
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="lte_rsrp", unit=SIGNAL_STRENGTH_DECIBELS_MILLIWATT, state_class=SensorStateClass.MEASUREMENT, category=EntityCategory.DIAGNOSTIC), #LTE Signalstärke
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="lte_rsrq", unit=SIGNAL_STRENGTH_DECIBELS, state_class=SensorStateClass.MEASUREMENT, category=EntityCategory.DIAGNOSTIC), #LTE Empfangsqualität
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="lte_rssi", unit=SIGNAL_STRENGTH_DECIBELS_MILLIWATT, state_class=SensorStateClass.MEASUREMENT, category=EntityCategory.DIAGNOSTIC), #LTE RSSI
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="lte_snr", unit=SIGNAL_STRENGTH_DECIBELS, state_class=SensorStateClass.MEASUREMENT, category=EntityCategory.DIAGNOSTIC), #LTE SNR
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="nr5g_rsrp", unit=SIGNAL_STRENGTH_DECIBELS_MILLIWATT, state_class=SensorStateClass.MEASUREMENT, category=EntityCategory.DIAGNOSTIC), #5G RSRP
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="nr5g_rsrq", unit=SIGNAL_STRENGTH_DECIBELS, state_class=SensorStateClass.MEASUREMENT, category=EntityCategory.DIAGNOSTIC), #5G RSRQ
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="nr5g_snr", unit=SIGNAL_STRENGTH_DECIBELS, state_class=SensorStateClass.MEASUREMENT, category=EntityCategory.DIAGNOSTIC), #5G SNR
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="nr5g_rssi", unit=SIGNAL_STRENGTH_DECIBELS_MILLIWATT, state_class=SensorStateClass.MEASUREMENT, category=EntityCategory.DIAGNOSTIC), #5G RSSI
+        #🌍 Roaming & Netzbetreiber
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="rmcc"), #Roaming Mobile Country Code (Land)
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="rmnc"), #Roaming Mobile Network Code (Provider)
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="network_provider"), #Netzname kurz
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="network_provider_fullname"), #Netzname lang
+        #📶 Zellinformationen
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="cell_id"), #LTE Cell ID
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="lte_pci"), #LTE Physical Cell ID
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="wan_active_band"), #Aktives LTE-Band
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="wan_active_channel"), #Aktiver LTE-Kanal
+        #📡 5G-spezifisch
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="nr5g_cell_id"), #5G Cell ID
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="nr5g_pci"), #5G Physical Cell ID
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="nr5g_action_channel"), #5G Betriebsfrequenz (ARFCN)
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="nr5g_action_band"), #5G Band
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="nr5g_bandwidth", visible=False), #5G Bandbreite
+        #📶 Carrier Aggregation (CA)
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="ltecasig", visible=False), #LTE CA Signalinfo (RSRP/SNR pro Band)
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="lteca", visible=False), #LTE CA Konfiguration
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="nrca", visible=False), #5G Carrier Aggregation Info
+        #🔒 Netzsperren
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="lock_lte_cell", visible=False), #LTE-Zellsperre
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="lock_nr_cell", visible=False), #5G-Zellsperre
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="lte_band_lock", visible=False), #LTE-Band-Sperrmaske (hex)
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="gw_band_lock", visible=False), #GSM/WCDMA Bandlock
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="nr5g_sa_band_lock", visible=False), #5G SA Band Lock Liste
+        #🕒 NITZ & Zeitsynchronisation
+        HyperboxSensor(coordinator, endpoint_key="network_info", data_key="nitz_timezone"), #Zeitzone laut NITZ
+        #📡 Verbindung & Datenverkehr (aktuelle Sitzung)
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="cid"), #Connection ID (Zelle / WWAN-Slot)
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_time", conversion_rate=3600, unit=UnitOfTime.HOURS, precision=2), #Aktuelle Betriebszeit
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_tx_bytes", conversion_rate=1073741824, unit=UnitOfInformation.GIGABYTES, precision=2), #Gesendete Bytes seit Neustart
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_rx_bytes", conversion_rate=1073741824, unit=UnitOfInformation.GIGABYTES, precision=2), #Empfangene Bytes seit Neustart
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_tx_packets"), #Gesendete Pakete (aktuell)
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_rx_packets"), #Empfangene Pakete (aktuell)
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_tx_drop_packets"), #Verlorene (nicht gesendete) Pakete
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_rx_drop_packets"), #Empfangsverluste (Pakete verworfen)
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_tx_error_packets"), #Sende-Fehlerpakete
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_rx_error_packets"), #Empfangs-Fehlerpakete
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_tx_speed", conversion_rate=1000000/8, unit=UnitOfInformation.MEGABITS, state_class=SensorStateClass.MEASUREMENT, precision=2), #Aktuelle Uploadrate
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_rx_speed", conversion_rate=1000000/8, unit=UnitOfInformation.MEGABITS, state_class=SensorStateClass.MEASUREMENT, precision=2), #Aktuelle Downloadrate
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_max_tx_speed", conversion_rate=1000000/8, unit=UnitOfInformation.MEGABITS, precision=2), #Maximale Uploadrate seit Neustart
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="real_max_rx_speed", conversion_rate=1000000/8, unit=UnitOfInformation.MEGABITS, precision=2), #Maximale Downloadrate seit Neustart
+        #📅 Monatsdaten
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_tx_bytes", conversion_rate=1073741824, unit=UnitOfInformation.GIGABYTES, precision=2), #Upload gesamt im Monat
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_rx_bytes", conversion_rate=1073741824, unit=UnitOfInformation.GIGABYTES, precision=2), #Download gesamt im Monat
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_tx_packets"), #Upload-Pakete im Monat
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_rx_packets"), #Download-Pakete im Monat
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_tx_drop_packets"), #Upload-Verluste im Monat
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_rx_drop_packets"), #Download-Verluste im Monat
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_tx_error_packets"), #Upload-Fehler im Monat
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="month_rx_error_packets"), #Download-Fehler im Monat
+        #🧮 Gesamtdaten (Gerätelebensdauer)
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_tx_bytes", conversion_rate=1073741824, unit=UnitOfInformation.GIGABYTES, precision=2), #Upload gesamt
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_rx_bytes", conversion_rate=1073741824, unit=UnitOfInformation.GIGABYTES, precision=2), #Download gesamt
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_tx_packets"), #Upload-Pakete gesamt
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_rx_packets"), #Download-Pakete gesamt
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_tx_drop_packets"), #Upload-Verluste gesamt
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_rx_drop_packets"), #Download-Verluste gesamt
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_tx_error_packets"), #Upload-Fehler gesamt
+        HyperboxSensor(coordinator, endpoint_key="network_statistics", data_key="total_rx_error_packets"), #Download-Fehler gesamt
     ]
 
     # Create the sensors.
@@ -49,7 +117,7 @@ class HyperboxSensor(CoordinatorEntity):
     _attr_should_poll = False
     _attr_has_entity_name = True
     
-    def __init__(self, coordinator: HyperboxCoordinator, endpoint_key: str, data_key: str, unit: str = None, conversion_rate: int = None, icon: str = None, visible: bool = True, category: str = None, state_class: str = None) -> None:
+    def __init__(self, coordinator: HyperboxCoordinator, endpoint_key: str, data_key: str, unit: str = None, conversion_rate: int = None, icon: str = None, visible: bool = True, category: str = None, state_class: str = None, precision: int = None) -> None:
         super().__init__(coordinator)
         self.device_info = coordinator.device_info
         self.translation_key = endpoint_key + "_" + data_key
@@ -59,6 +127,8 @@ class HyperboxSensor(CoordinatorEntity):
         self._data_key = data_key
         self._state_class = state_class
         self._conversion_rate = conversion_rate
+        if precision is not None:
+            self.suggested_display_precision = precision
         if unit is not None:
             self._attr_unit_of_measurement = unit
         if icon is not None:
@@ -79,10 +149,10 @@ class HyperboxSensor(CoordinatorEntity):
     
     @property
     def extra_state_attributes(self):
+        attr = {}
         if self._state_class is not None:
-            return {
-                "state_class": self._state_class
-            }
+            attr['state_class'] = self._state_class
+        return attr
 
 class MessageSensor(CoordinatorEntity):
     
