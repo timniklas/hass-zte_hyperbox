@@ -9,7 +9,7 @@
 
 ## Overview
 
-The ZTE Hyperbox Home Assistant Custom Integration allows you to integrate the ZTE Hyperbox App with your Home Assistant setup.
+The ZTE Hyperbox Home Assistant Custom Integration allows you to integrate the ZTE Hyperbox Router with your Home Assistant setup.
 
 Supported devices:
 - ZTE MC8810 Hyperbox 5G Lite
