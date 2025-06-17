@@ -23,33 +23,215 @@
                 "name": "Gerät neustarten"
             }
         },
+        "binary_sensor": {
+            "network_info_nitz_sync_flag": {
+                "name": "Synchronisation aktiv"
+            },
+            "network_info_simcard_roam": {
+                "name": "Roaming-Status der SIM"
+            },
+            "network_info_lteca_state": {
+                "name": "CA Status"
+            }
+        },
         "sensor": {
             "messages": {
                 "name": "SMS Nachrichten"
             },
-            "network_statistics_real_rx_speed": {
-                "name": "Aktueller Download"
+            "network_info_net_select": {
+                "name": "Netzpräferenz"
             },
-            "network_statistics_real_tx_speed": {
-                "name": "Aktueller Upload"
+            "network_info_net_select_mode": {
+                "name": "Modus der Netzauswahl"
             },
-            "network_statistics_total_rx_bytes": {
-                "name": "Gesamt Download"
+            "network_info_network_type": {
+                "name": "Aktueller Verbindungstyp"
             },
-            "network_statistics_total_tx_bytes": {
-                "name": "Gesamt Upload"
+            "network_info_domain_stat": {
+                "name": "Netzdomäne"
             },
             "network_info_signalbar": {
-                "name": "Signalstärke Balken"
-            },
-            "network_info_nr5g_rsrp": {
-                "name": "Signalstärke 5G"
+                "name": "Signalbalken-Anzeige"
             },
             "network_info_lte_rsrp": {
-                "name": "Signalstärke LTE"
+                "name": "LTE Signalstärke"
+            },
+            "network_info_lte_rsrq": {
+                "name": "LTE Empfangsqualität"
+            },
+            "network_info_lte_rssi": {
+                "name": "LTE RSSI"
+            },
+            "network_info_lte_snr": {
+                "name": "LTE SNR"
+            },
+            "network_info_nr5g_rsrp": {
+                "name": "5G Signalstärke"
+            },
+            "network_info_nr5g_rsrq": {
+                "name": "5G Empfangsqualität"
+            },
+            "network_info_nr5g_snr": {
+                "name": "5G SNR"
+            },
+            "network_info_nr5g_rssi": {
+                "name": "5G RSSI"
+            },
+            "network_info_rmcc": {
+                "name": "Roaming Mobile Country Code (Land)"
+            },
+            "network_info_rmnc": {
+                "name": "Roaming Mobile Network Code (Provider)"
+            },
+            "network_info_network_provider": {
+                "name": "Netzname kurz"
             },
             "network_info_network_provider_fullname": {
-                "name": "Provider"
+                "name": "Netzname lang"
+            },
+            "network_info_cell_id": {
+                "name": "LTE Cell ID"
+            },
+            "network_info_lte_pci": {
+                "name": "LTE Physical Cell ID"
+            },
+            "network_info_wan_active_band": {
+                "name": "Aktives LTE-Band"
+            },
+            "network_info_wan_active_channel": {
+                "name": "Aktiver LTE-Kanal"
+            },
+            "network_info_nr5g_cell_id": {
+                "name": "5G Cell ID"
+            },
+            "network_info_nr5g_pci": {
+                "name": "5G Physical Cell ID"
+            },
+            "network_info_nr5g_action_channel": {
+                "name": "5G Betriebsfrequenz (ARFCN)"
+            },
+            "network_info_nr5g_action_band": {
+                "name": "5G Band"
+            },
+            "network_info_nr5g_bandwidth": {
+                "name": "5G Bandbreite"
+            },
+            "network_info_ltecasig": {
+                "name": "LTE CA Signalinfo (RSRP/SNR pro Band)"
+            },
+            "network_info_lteca": {
+                "name": "LTE CA Konfiguration"
+            },
+            "network_info_nrca": {
+                "name": "5G Carrier Aggregation Info"
+            },
+            "network_info_lock_lte_cell": {
+                "name": "LTE-Zellsperre"
+            },
+            "network_info_lock_nr_cell": {
+                "name": "5G-Zellsperre"
+            },
+            "network_info_lte_band_lock": {
+                "name": "LTE-Band-Sperrmaske (hex)"
+            },
+            "network_info_gw_band_lock": {
+                "name": "GSM/WCDMA Bandlock"
+            },
+            "network_info_nr5g_sa_band_lock": {
+                "name": "5G SA Band Lock Liste"
+            },
+            "network_info_nitz_timezone": {
+                "name": "Zeitzone laut NITZ"
+            },
+            "network_statistics_cid": {
+                "name": "Connection ID (Zelle / WWAN-Slot)"
+            },
+            "network_statistics_real_time": {
+                "name": "Aktuelle Betriebszeit"
+            },
+            "network_statistics_real_tx_bytes": {
+                "name": "Gesendete Bytes seit Neustart"
+            },
+            "network_statistics_real_rx_bytes": {
+                "name": "Empfangene Bytes seit Neustart"
+            },
+            "network_statistics_real_tx_packets": {
+                "name": "Gesendete Pakete (aktuell)Z"
+            },
+            "network_statistics_real_rx_packets": {
+                "name": "Empfangene Pakete (aktuell)"
+            },
+            "network_statistics_real_tx_drop_packets": {
+                "name": "Verlorene (nicht gesendete) Pakete"
+            },
+            "network_statistics_real_rx_drop_packets": {
+                "name": "Empfangsverluste (Pakete verworfen)"
+            },
+            "network_statistics_real_tx_error_packets": {
+                "name": "Sende-Fehlerpakete"
+            },
+            "network_statistics_real_rx_error_packets": {
+                "name": "Empfangs-Fehlerpakete"
+            },
+            "network_statistics_real_tx_speed": {
+                "name": "Aktuelle Uploadrate"
+            },
+            "network_statistics_real_rx_speed": {
+                "name": "Aktuelle Downloadrate"
+            },
+            "network_statistics_real_max_tx_speed": {
+                "name": "Maximale Uploadrate seit Neustart"
+            },
+            "network_statistics_real_max_rx_speed": {
+                "name": "Maximale Downloadrate seit Neustart"
+            },
+            "network_statistics_month_tx_bytes": {
+                "name": "Upload gesamt im Monat"
+            },
+            "network_statistics_month_rx_bytes": {
+                "name": "Download gesamt im Monat"
+            },
+            "network_statistics_month_tx_packets": {
+                "name": "Upload-Pakete im Monat"
+            },
+            "network_statistics_month_rx_packets": {
+                "name": "Download-Pakete im Monat"
+            },
+            "network_statistics_month_tx_drop_packets": {
+                "name": "Upload-Verluste im Monat"
+            },
+            "network_statistics_month_rx_drop_packets": {
+                "name": "Download-Verluste im Monat"
+            },
+            "network_statistics_month_tx_error_packets": {
+                "name": "Upload-Fehler im Monat"
+            },
+            "network_statistics_month_rx_error_packets": {
+                "name": "Download-Fehler im Monat"
+            },
+            "network_statistics_total_tx_bytes": {
+                "name": "Upload-Pakete gesamt"
+            },
+            "network_statistics_total_rx_bytes": {
+                "name": "Download gesamt"
+            },
+            "network_statistics_total_tx_packets": {
+                "name": "Upload-Pakete gesamt"
+            },
+            "network_statistics_total_rx_packets": {
+                "name": "Download-Pakete gesamt"
+            },
+            "network_statistics_total_tx_drop_packets": {
+                "name": "Upload-Verluste gesamt"
+            },
+            "network_statistics_total_rx_drop_packets": {
+                "name": "Download-Verluste gesamt"
+            },
+            "network_statistics_total_tx_error_packets": {
+                "name": "Upload-Fehler gesamt"
+            },
+            "network_statistics_total_rx_error_packets": {
+                "name": "Download-Fehler gesamt"
             }
         }
     }
