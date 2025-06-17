@@ -1,0 +1,238 @@
+{
+    "title": "ZTE Hyperbox",
+    "config": {
+        "step": {
+            "user": {
+                "title": "ZTE Hyperbox Setup",
+                "description": "These credentials are used to retrieve data from the device.",
+                "data": {
+                    "host": "IP address",
+                    "password": "Password"
+                }
+            }
+        },
+        "abort": {
+            "connenction": "Connection error.",
+            "authentication": "Authentication error.",
+            "unknown": "Unknown error."
+        }
+    },
+    "entity": {
+        "button": {
+            "reboot": {
+                "name": "Restart device"
+            }
+        },
+        "binary_sensor": {
+            "network_info_nitz_sync_flag": {
+                "name": "Synchronization active"
+            },
+            "network_info_simcard_roam": {
+                "name": "SIM roaming status"
+            },
+            "network_info_lteca_state": {
+                "name": "CA status"
+            }
+        },
+        "sensor": {
+            "messages": {
+                "name": "SMS messages"
+            },
+            "network_info_net_select": {
+                "name": "Network preference"
+            },
+            "network_info_net_select_mode": {
+                "name": "Network selection mode"
+            },
+            "network_info_network_type": {
+                "name": "Current connection type"
+            },
+            "network_info_domain_stat": {
+                "name": "Network domain"
+            },
+            "network_info_signalbar": {
+                "name": "Signal bar display"
+            },
+            "network_info_lte_rsrp": {
+                "name": "LTE signal strength"
+            },
+            "network_info_lte_rsrq": {
+                "name": "LTE reception quality"
+            },
+            "network_info_lte_rssi": {
+                "name": "LTE RSSI"
+            },
+            "network_info_lte_snr": {
+                "name": "LTE SNR"
+            },
+            "network_info_nr5g_rsrp": {
+                "name": "5G signal strength"
+            },
+            "network_info_nr5g_rsrq": {
+                "name": "5G reception quality"
+            },
+            "network_info_nr5g_snr": {
+                "name": "5G SNR"
+            },
+            "network_info_nr5g_rssi": {
+                "name": "5G RSSI"
+            },
+            "network_info_rmcc": {
+                "name": "Roaming Mobile Country Code (country)"
+            },
+            "network_info_rmnc": {
+                "name": "Roaming Mobile Network Code (provider)"
+            },
+            "network_info_network_provider": {
+                "name": "Short network name"
+            },
+            "network_info_network_provider_fullname": {
+                "name": "Long network name"
+            },
+            "network_info_cell_id": {
+                "name": "LTE Cell ID"
+            },
+            "network_info_lte_pci": {
+                "name": "LTE Physical Cell ID"
+            },
+            "network_info_wan_active_band": {
+                "name": "Active LTE band"
+            },
+            "network_info_wan_active_channel": {
+                "name": "Active LTE channel"
+            },
+            "network_info_nr5g_cell_id": {
+                "name": "5G Cell ID"
+            },
+            "network_info_nr5g_pci": {
+                "name": "5G Physical Cell ID"
+            },
+            "network_info_nr5g_action_channel": {
+                "name": "5G operating frequency (ARFCN)"
+            },
+            "network_info_nr5g_action_band": {
+                "name": "5G band"
+            },
+            "network_info_nr5g_bandwidth": {
+                "name": "5G bandwidth"
+            },
+            "network_info_ltecasig": {
+                "name": "LTE CA signal info (RSRP/SNR per band)"
+            },
+            "network_info_lteca": {
+                "name": "LTE CA configuration"
+            },
+            "network_info_nrca": {
+                "name": "5G carrier aggregation info"
+            },
+            "network_info_lock_lte_cell": {
+                "name": "LTE cell lock"
+            },
+            "network_info_lock_nr_cell": {
+                "name": "5G cell lock"
+            },
+            "network_info_lte_band_lock": {
+                "name": "LTE band lock mask (hex)"
+            },
+            "network_info_gw_band_lock": {
+                "name": "GSM/WCDMA band lock"
+            },
+            "network_info_nr5g_sa_band_lock": {
+                "name": "5G SA band lock list"
+            },
+            "network_info_nitz_timezone": {
+                "name": "Timezone according to NITZ"
+            },
+            "network_statistics_cid": {
+                "name": "Connection ID (cell / WWAN slot)"
+            },
+            "network_statistics_real_time": {
+                "name": "Current uptime"
+            },
+            "network_statistics_real_tx_bytes": {
+                "name": "Bytes sent since reboot"
+            },
+            "network_statistics_real_rx_bytes": {
+                "name": "Bytes received since reboot"
+            },
+            "network_statistics_real_tx_packets": {
+                "name": "Packets sent (current)"
+            },
+            "network_statistics_real_rx_packets": {
+                "name": "Packets received (current)"
+            },
+            "network_statistics_real_tx_drop_packets": {
+                "name": "Lost (unsent) packets"
+            },
+            "network_statistics_real_rx_drop_packets": {
+                "name": "Reception losses (discarded packets)"
+            },
+            "network_statistics_real_tx_error_packets": {
+                "name": "Send error packets"
+            },
+            "network_statistics_real_rx_error_packets": {
+                "name": "Receive error packets"
+            },
+            "network_statistics_real_tx_speed": {
+                "name": "Current upload rate"
+            },
+            "network_statistics_real_rx_speed": {
+                "name": "Current download rate"
+            },
+            "network_statistics_real_max_tx_speed": {
+                "name": "Maximum upload rate since reboot"
+            },
+            "network_statistics_real_max_rx_speed": {
+                "name": "Maximum download rate since reboot"
+            },
+            "network_statistics_month_tx_bytes": {
+                "name": "Total upload this month"
+            },
+            "network_statistics_month_rx_bytes": {
+                "name": "Total download this month"
+            },
+            "network_statistics_month_tx_packets": {
+                "name": "Upload packets this month"
+            },
+            "network_statistics_month_rx_packets": {
+                "name": "Download packets this month"
+            },
+            "network_statistics_month_tx_drop_packets": {
+                "name": "Upload losses this month"
+            },
+            "network_statistics_month_rx_drop_packets": {
+                "name": "Download losses this month"
+            },
+            "network_statistics_month_tx_error_packets": {
+                "name": "Upload errors this month"
+            },
+            "network_statistics_month_rx_error_packets": {
+                "name": "Download errors this month"
+            },
+            "network_statistics_total_tx_bytes": {
+                "name": "Total upload packets"
+            },
+            "network_statistics_total_rx_bytes": {
+                "name": "Total download"
+            },
+            "network_statistics_total_tx_packets": {
+                "name": "Total upload packets"
+            },
+            "network_statistics_total_rx_packets": {
+                "name": "Total download packets"
+            },
+            "network_statistics_total_tx_drop_packets": {
+                "name": "Total upload losses"
+            },
+            "network_statistics_total_rx_drop_packets": {
+                "name": "Total download losses"
+            },
+            "network_statistics_total_tx_error_packets": {
+                "name": "Total upload errors"
+            },
+            "network_statistics_total_rx_error_packets": {
+                "name": "Total download errors"
+            }
+        }
+    }
+}
