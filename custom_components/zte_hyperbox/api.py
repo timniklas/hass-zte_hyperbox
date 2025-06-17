@@ -19,8 +19,11 @@ class API:
         self._url = "http://" + hostname + "/"
         self._session = async_get_clientsession(hass)
         self._req_id = 0
-        self._ubus_rpc_session = "00000000000000000000000000000000"
+        self._resetSession()
+
+    def _resetSession(self):
         self.connected: bool = False
+        self._ubus_rpc_session = "00000000000000000000000000000000"
 
     async def sendRequest(self, endpoint, method, params = {}):
         payload = [
@@ -46,10 +49,13 @@ class API:
             raise APIAuthError(response_json['error']['message'])
         result = response_json['result']
         if result[0] == 0:
-            return response_json['result'][1]
+            if len(result) > 1:
+                return response_json['result'][1]
+            return {}
         raise APIConnectionError("invalid jsonrpc response status: " + str(result[0]))
 
     async def _getLoginSalt(self):
+        self._resetSession()
         return (await self.sendRequest("zwrt_web", "web_login_info"))['zte_web_sault']
 
     def _hash(self, str):
@@ -100,7 +106,7 @@ class API:
         for message in response['messages']:
             message['content'] = decodeMessage(message['content'])
             message['date'] = self._format_date(message['date']).timestamp()
-        return response['messages']
+        return list(filter(lambda message: message['tag'] != '2', response['messages']))
     
     async def sendSMSMessage(self, address, message):
         await self.sendRequest("zwrt_wms", "zte_libwms_send_sms", {
