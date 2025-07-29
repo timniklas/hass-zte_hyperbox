@@ -18,8 +18,9 @@ from .coordinator import HyperboxCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS: list[Platform] = [Platform.BINARY_SENSOR, Platform.SENSOR, Platform.BUTTON]
-
+#PLATFORMS: list[Platform] = [Platform.BINARY_SENSOR, Platform.SENSOR, Platform.BUTTON]
+#disabled due to stability issues
+PLATFORMS: list[Platform] = [Platform.BUTTON]
 
 @dataclass
 class RuntimeData:
